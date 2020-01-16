@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pymysql.cursors
- 
+import data.mysqlData as mysqlData
 #python 两个list 求交集，并集，差集 - CSDN博客  https://blog.csdn.net/bitcarmanlee/article/details/51622263
 #获取两个list的交集 返回值是list
 def intersection(listA,listB):
@@ -42,10 +42,14 @@ def intersection(listA,listB):
 
 '''
 def connectMysql(hasArr=[0,0,0,0]):
-    connection = pymysql.connect(host='39.108.171.116',
-                                user='root',
-                                password='sqladminroot0.123',
-                                db='cyrd5.0',
+    host=mysqlData.getHost()
+    user=mysqlData.getUser()
+    password=mysqlData.getPassword()
+    db=mysqlData.getDB()
+    connection = pymysql.connect(host=host,
+                                user=user,
+                                password=password,
+                                db=db,
                                 charset='utf8mb4',
                                 cursorclass=pymysql.cursors.DictCursor)
     if isinstance(hasArr, list):
