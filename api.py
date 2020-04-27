@@ -8,10 +8,12 @@ import fontCut.fontTool as fontTool
 app = Flask(__name__)
 # 跨域支持
 def after_request(resp):
+    # http://editor.cyrd.material.gdinsight.com:8043
     resp.headers['Access-Control-Allow-Origin'] = '*'
     resp.headers['Access-Control-Allow-Methods'] = '*'
     resp.headers['Access-Control-Allow-Headers'] = 'Content-Type,XFILENAME,XFILECATEGORY,XFILESIZE,my_flag'
     resp.headers['Connection'] = 'close'
+    resp.headers['Access-Control-Allow-Credentials'] = 'false'
     return resp
 
 app.after_request(after_request)
@@ -56,11 +58,13 @@ api.add_resource(photoshop, '/getImage')
 # 字体压缩
 class cut(Resource):
     def post(self):
-        args = parser.parse_args()
-        res=fontTool.init(args['user_id'],args['font_name'],args['text'])
-        # res=fontTool.init()
-        return res
-
+        try:
+          args = parser.parse_args()
+          res=fontTool.init(args['user_id'],args['font_name'],args['text'])
+          # res=fontTool.init()
+          return res
+        finally:
+          print('err')
 api.add_resource(cut, '/cutFont')
 
 if __name__ == '__main__':
